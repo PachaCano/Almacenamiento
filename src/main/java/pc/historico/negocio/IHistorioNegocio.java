@@ -1,13 +1,16 @@
 package pc.historico.negocio;
 
 import pc.historico.entities.Historico;
-import pc.historico.entities.HistoricoDTO;
+import pc.historico.entities.HistoricoRequestDTO;
+import pc.historico.entities.HistoricoResponseDTO;
 import pc.historico.negocio.excepciones.NegocioExcepcion;
+
+import java.util.Date;
 import java.util.List;
 
 public interface IHistorioNegocio {
 
-    public List<Historico> listado() throws NegocioExcepcion;
-    public List<Historico> listadoPorFechaHora(java.sql.Date fechaHora) throws NegocioExcepcion;
-    public Historico create(HistoricoDTO h) throws NegocioExcepcion;
+    public List<HistoricoResponseDTO> listado() throws NegocioExcepcion;
+    public List<Historico> listadoPorFechaHora(Date fechaHora) throws NegocioExcepcion;
+    public Historico create(HistoricoRequestDTO h) throws NegocioExcepcion;
 }

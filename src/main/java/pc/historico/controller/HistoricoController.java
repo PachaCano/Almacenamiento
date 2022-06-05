@@ -1,16 +1,14 @@
 package pc.historico.controller;
 
-import javassist.NotFoundException;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import pc.historico.entities.Historico;
-import pc.historico.entities.HistoricoDTO;
+import pc.historico.entities.HistoricoRequestDTO;
 import pc.historico.negocio.HistoricoNegocio;
 import pc.historico.negocio.excepciones.NegocioExcepcion;
 import lombok.AllArgsConstructor;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +16,12 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
-
+@Slf4j
 public class HistoricoController {
 
     private final HistoricoNegocio historicoServicio;
 
-    @GetMapping("/historico")
+    @GetMapping(value = "/historico", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getHistorico() throws NegocioExcepcion {
         return new ResponseEntity<>(this.historicoServicio.listado(), HttpStatus.OK);
     }
@@ -34,7 +32,7 @@ public class HistoricoController {
     }
 
     @PostMapping("/historico")
-    public ResponseEntity<?> crearHistorico (@RequestBody HistoricoDTO h) {
+    public ResponseEntity<?> crearHistorico (@RequestBody HistoricoRequestDTO h) {
         try {
             this.historicoServicio.create(h);
             return new ResponseEntity<>(HttpStatus.OK);

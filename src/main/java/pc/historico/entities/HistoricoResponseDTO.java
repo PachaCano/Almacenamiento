@@ -5,16 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Map;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoricoDTO {
+public class HistoricoResponseDTO {
 
     private Date fechaHora;
-    private String rawData;
+    private Map<String,Object> rawData;
     private String categoria;
     private String subCategoria;
     private String identificador;

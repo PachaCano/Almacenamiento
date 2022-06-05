@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,7 +21,7 @@ public class Historico{
     private int id; //se está autogenerando?
 
     @Column(nullable = false)
-    private java.sql.Date fechaHoraCreacion;
+    private Date fechaHoraCreacion;
     private String rawData; //Usar función de String a JSON y viceversa después
 
     @Column(length = 100, nullable = false)
