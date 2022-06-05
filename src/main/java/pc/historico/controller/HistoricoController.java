@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 public class HistoricoController {
 
     private final HistoricoNegocio historicoServicio;
-    private final HistoricoDTO historicoDTO;
 
     @GetMapping("/historico")
     public ResponseEntity<?> getHistorico() throws NegocioExcepcion {
