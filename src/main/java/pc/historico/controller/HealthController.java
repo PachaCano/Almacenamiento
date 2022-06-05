@@ -1,4 +1,4 @@
-package pc.Historico.Controller;
+package pc.historico.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package pc.Historico.Negocio.excepciones;
+package pc.historico.negocio.excepciones;
 
 public class NegocioExcepcion extends Exception{
 

@@ -1,4 +1,4 @@
-package pc.Historico.entities;
+package pc.historico.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,10 +17,10 @@ public class Historico{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id; //se está autogenerando?
 
     @Column(nullable = false)
-    private java.sql.Timestamp fechaHoraCreacion;
+    private java.sql.Date fechaHoraCreacion;
     private String rawData; //Usar función de String a JSON y viceversa después
 
     @Column(length = 100, nullable = false)

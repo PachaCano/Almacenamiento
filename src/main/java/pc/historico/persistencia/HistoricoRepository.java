@@ -1,7 +1,8 @@
-package pc.Historico.persistencia;
+package pc.historico.persistencia;
 
-import pc.Historico.entities.Historico;
+import pc.historico.entities.Historico;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,6 @@ import java.util.List;
 @Repository
 public interface HistoricoRepository extends JpaRepository<Historico, Long> {
 
-   List<Historico> findAllByfechaHoraCreacion(Timestamp fechaHora);
+   List<Historico> findAllByfechaHoraCreacion(Date fechaHora);
     
 }
