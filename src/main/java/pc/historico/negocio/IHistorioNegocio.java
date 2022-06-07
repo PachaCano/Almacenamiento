@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface IHistorioNegocio {
 
-    public List<HistoricoResponseDTO> listado() throws NegocioExcepcion;
-    public List<Historico> listadoPorFechaHora(Date fechaHora) throws NegocioExcepcion;
-    public Historico create(HistoricoRequestDTO h) throws NegocioExcepcion;
+    List<HistoricoResponseDTO> listado() throws NegocioExcepcion;
+    List<Historico> listadoPorFechaHora(Date fechaHora) throws NegocioExcepcion;
+    Historico create(HistoricoRequestDTO h) throws NegocioExcepcion;
+
+    Historico getUltimo() throws NegocioExcepcion;
 }

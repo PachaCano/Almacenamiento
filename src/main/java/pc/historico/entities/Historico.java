@@ -15,6 +15,16 @@ import java.util.Date;
 @Builder
 
 public class Historico{
+    @Override
+    public String toString() {
+        return "{\"id\":" + id +
+                ", \"fechaHoraCreacion\":" + fechaHoraCreacion +
+                ", \"rawData\":" + rawData +
+                ", \"categoria\":\"" + categoria + '\"' +
+                ", \"subCategoria\":\"" + subCategoria + '\"' +
+                ", \"identificador\":\"" + identificador + '\"' +
+                '}';
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

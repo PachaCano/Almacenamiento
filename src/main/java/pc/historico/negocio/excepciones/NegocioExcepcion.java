@@ -2,6 +2,10 @@ package pc.historico.negocio.excepciones;
 
 public class NegocioExcepcion extends Exception{
 
+    public NegocioExcepcion(String message) {
+        super(message);
+    }
+
     public NegocioExcepcion() {
 
     }

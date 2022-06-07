@@ -1,8 +1,12 @@
 package pc.historico.negocio;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import pc.historico.entities.Historico;
 import pc.historico.dtos.HistoricoRequestDTO;
 import pc.historico.dtos.HistoricoResponseDTO;
@@ -21,23 +25,23 @@ import java.util.Map;
 public class HistoricoNegocio implements IHistorioNegocio{
 
     private final HistoricoRepository historicoDAO;
+    private final MemCache cache;
 
     @Override
     public List<HistoricoResponseDTO> listado() throws NegocioExcepcion {
         try {
             List<Historico> list = historicoDAO.findAll();
             List<HistoricoResponseDTO> list2 = new ArrayList<>();
-            HistoricoResponseDTO historicoResponse = new HistoricoResponseDTO();
-            log.warn("*********Size = ", list.toString());
+            HistoricoResponseDTO historicoResponse;
             ObjectMapper mapper = new ObjectMapper();
 
-            for (int i = 0; i < list.size(); i++) {
+            for (Historico historico : list) {
                 historicoResponse = HistoricoResponseDTO.builder()
-                        .fechaHora(list.get(i).getFechaHoraCreacion())
-                        .categoria(list.get(i).getCategoria())
-                        .subCategoria(list.get(i).getSubCategoria())
-                        .identificador(list.get(i).getIdentificador())
-                        .rawData(mapper.readValue(list.get(i).getRawData(), Map.class))
+                        .fechaHora(historico.getFechaHoraCreacion())
+                        .categoria(historico.getCategoria())
+                        .subCategoria(historico.getSubCategoria())
+                        .identificador(historico.getIdentificador())
+                        .rawData(mapper.readValue(historico.getRawData(), Map.class))
                         .build();
                 log.warn(historicoResponse.getRawData().toString());
                 list2.add(historicoResponse);
@@ -71,12 +75,25 @@ public class HistoricoNegocio implements IHistorioNegocio{
                     .rawData(h.getRawData().toString())
                     .build();
 
+            cache.set(historico.toString(), 3600);
+
             return historicoDAO.save(historico);
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new NegocioExcepcion(e);
         }
+    }
+
+    @Override
+    public Historico getUltimo() throws NegocioExcepcion {
+        Historico h;
+        try {
+            h = new ObjectMapper().readValue(cache.get(), Historico.class);
+        } catch (JsonProcessingException e) {
+            throw new NegocioExcepcion(e.getMessage());
+        }
+        return h;
     }
 
 }

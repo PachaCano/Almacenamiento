@@ -26,6 +26,11 @@ public class HistoricoController {
         return new ResponseEntity<>(this.historicoServicio.listado(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/ultimo", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUltimo() throws NegocioExcepcion {
+        return new ResponseEntity<>(this.historicoServicio.getUltimo(), HttpStatus.OK);
+    }
+
     @GetMapping("/{fechaHora}")
     public ResponseEntity<?> getHistoricoFechaHora(@PathVariable Date fechaHora) throws NegocioExcepcion {
         return new ResponseEntity<>(this.historicoServicio.listadoPorFechaHora(fechaHora), HttpStatus.OK);
