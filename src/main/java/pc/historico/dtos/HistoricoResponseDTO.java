@@ -1,4 +1,4 @@
-package pc.historico.entities;
+package pc.historico.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

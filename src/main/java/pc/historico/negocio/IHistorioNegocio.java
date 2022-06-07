@@ -1,8 +1,8 @@
 package pc.historico.negocio;
 
 import pc.historico.entities.Historico;
-import pc.historico.entities.HistoricoRequestDTO;
-import pc.historico.entities.HistoricoResponseDTO;
+import pc.historico.dtos.HistoricoRequestDTO;
+import pc.historico.dtos.HistoricoResponseDTO;
 import pc.historico.negocio.excepciones.NegocioExcepcion;
 
 import java.util.Date;

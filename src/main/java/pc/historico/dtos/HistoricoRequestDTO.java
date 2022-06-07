@@ -1,9 +1,10 @@
-package pc.historico.entities;
+package pc.historico.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pc.historico.entities.RawData;
 
 @Data
 @Builder

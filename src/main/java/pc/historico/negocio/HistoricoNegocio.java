@@ -3,16 +3,13 @@ package pc.historico.negocio;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONObject;
 import pc.historico.entities.Historico;
-import pc.historico.entities.HistoricoRequestDTO;
-import pc.historico.entities.HistoricoResponseDTO;
+import pc.historico.dtos.HistoricoRequestDTO;
+import pc.historico.dtos.HistoricoResponseDTO;
 import pc.historico.negocio.excepciones.NegocioExcepcion;
 import pc.historico.persistencia.HistoricoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
