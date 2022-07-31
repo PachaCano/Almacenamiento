@@ -8,12 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import pc.historico.entities.Historico;
+import pc.historico.entities.Memcache;
 import pc.historico.dtos.HistoricoRequestDTO;
 import pc.historico.dtos.HistoricoResponseDTO;
 import pc.historico.negocio.excepciones.NegocioExcepcion;
 import pc.historico.persistencia.HistoricoRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInput;
+import java.io.IOException;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.Map;
 public class HistoricoNegocio implements IHistorioNegocio{
 
     private final HistoricoRepository historicoDAO;
-    private final MemCache cache;
+    private final Memcache cache;
 
     @Override
     public List<HistoricoResponseDTO> listado() throws NegocioExcepcion {
@@ -75,7 +78,11 @@ public class HistoricoNegocio implements IHistorioNegocio{
                     .rawData(h.getRawData().toString())
                     .build();
 
-            cache.set(historico.toString(), 3600);
+            if (cache.getUltimo() == null) {
+                cache.ultimo(historico, 3600);
+            } else {
+                cache.actualizarUltimo(historico, 3600); //poner esto en una variable estática
+            }
 
             return historicoDAO.save(historico);
 
@@ -86,11 +93,12 @@ public class HistoricoNegocio implements IHistorioNegocio{
     }
 
     @Override
+    //Esto no sé si funcionaa
     public Historico getUltimo() throws NegocioExcepcion {
         Historico h;
         try {
-            h = new ObjectMapper().readValue(cache.get(), Historico.class);
-        } catch (JsonProcessingException e) {
+            h = new ObjectMapper().readValue((DataInput) cache.getUltimo(), Historico.class);
+        } catch (IOException e) {
             throw new NegocioExcepcion(e.getMessage());
         }
         return h;
