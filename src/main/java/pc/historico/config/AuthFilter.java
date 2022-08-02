@@ -32,7 +32,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
         String parameter = request.getParameter("token");
 
-        WebClient webClient = WebClient.create("http://172.20.1.11:8080");
+        WebClient webClient = WebClient.create("http://localhost:8080");
 
         VerifTokenResponse remoteToken = webClient.post()
                 .uri("/verify/token?token=" + parameter)

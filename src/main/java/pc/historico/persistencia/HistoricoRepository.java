@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface HistoricoRepository extends JpaRepository<Historico, Long> {
 
-   List<Historico> findAllByfechaHoraCreacion(Date fechaHora);
+   //List<Historico> findAllByfechaHoraCreacion(Date fechaHora);
     
 }

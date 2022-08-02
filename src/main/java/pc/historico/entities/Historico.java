@@ -18,7 +18,6 @@ public class Historico{
     @Override
     public String toString() {
         return "{\"id\":" + id +
-                ", \"fechaHoraCreacion\":" + fechaHoraCreacion +
                 ", \"rawData\":" + rawData +
                 ", \"categoria\":\"" + categoria + '\"' +
                 ", \"subCategoria\":\"" + subCategoria + '\"' +
@@ -30,8 +29,6 @@ public class Historico{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; //se está autogenerando?
 
-    @Column(nullable = false)
-    private Date fechaHoraCreacion;
     private String rawData; //Usar función de String a JSON y viceversa después
 
     @Column(length = 100, nullable = false)

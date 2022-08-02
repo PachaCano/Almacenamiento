@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import pc.historico.entities.Historico;
@@ -24,11 +25,16 @@ import java.util.Map;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class HistoricoNegocio implements IHistorioNegocio{
 
-    private final HistoricoRepository historicoDAO;
-    private final Memcache cache;
+    @Autowired
+    private HistoricoRepository historicoDAO;
+
+    private Memcache cache = new Memcache();
+
+    public HistoricoNegocio() throws Exception {
+
+    }
 
     @Override
     public List<HistoricoResponseDTO> listado() throws NegocioExcepcion {
@@ -40,7 +46,7 @@ public class HistoricoNegocio implements IHistorioNegocio{
 
             for (Historico historico : list) {
                 historicoResponse = HistoricoResponseDTO.builder()
-                        .fechaHora(historico.getFechaHoraCreacion())
+                        //.fechaHora(historico.getFechaHoraCreacion())
                         .categoria(historico.getCategoria())
                         .subCategoria(historico.getSubCategoria())
                         .identificador(historico.getIdentificador())
@@ -59,7 +65,7 @@ public class HistoricoNegocio implements IHistorioNegocio{
     @Override
     public List<Historico> listadoPorFechaHora(Date fechaHora) throws NegocioExcepcion {
         try {
-            return historicoDAO.findAllByfechaHoraCreacion(fechaHora);
+            return historicoDAO.findAll();
         } catch (Exception e) {
             log.error((e.getMessage()), e);
             throw new NegocioExcepcion(e);
@@ -71,18 +77,18 @@ public class HistoricoNegocio implements IHistorioNegocio{
         try {
             log.warn(h.toString());
             Historico historico = Historico.builder()
-                    .fechaHoraCreacion(new Date())
+                    //.fechaHoraCreacion(new Date())
                     .categoria(h.getCategoria())
                     .subCategoria(h.getSubCategoria())
                     .identificador(h.getIdentificador())
                     .rawData(h.getRawData().toString())
                     .build();
 
-            if (cache.getUltimo() == null) {
-                cache.ultimo(historico, 3600);
-            } else {
+            //if (cache.getUltimo() == null) {
+            //    cache.ultimo(historico, 3600); ver de hacer esto al inicio, inicializar en null
+            //} else {
                 cache.actualizarUltimo(historico, 3600); //poner esto en una variable estática
-            }
+            //}
 
             return historicoDAO.save(historico);
 
@@ -97,7 +103,7 @@ public class HistoricoNegocio implements IHistorioNegocio{
     public Historico getUltimo() throws NegocioExcepcion {
         Historico h;
         try {
-            h = new ObjectMapper().readValue((DataInput) cache.getUltimo(), Historico.class);
+            h = cache.getUltimo();
         } catch (IOException e) {
             throw new NegocioExcepcion(e.getMessage());
         }
