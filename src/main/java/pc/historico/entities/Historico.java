@@ -15,6 +15,20 @@ import java.util.Date;
 @Builder
 
 public class Historico{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String rawData; //Usar función de String a JSON y viceversa después
+
+    private Date fechaHoraCreacion;
+    @Column(length = 100, nullable = false)
+    private String categoria;
+    @Column(length = 100)
+    private String subCategoria;
+    @Column(length = 100, nullable = false)
+    private String identificador;
+
     @Override
     public String toString() {
         return "{\"id\":" + id +
@@ -24,17 +38,4 @@ public class Historico{
                 ", \"identificador\":\"" + identificador + '\"' +
                 '}';
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; //se está autogenerando?
-
-    private String rawData; //Usar función de String a JSON y viceversa después
-
-    @Column(length = 100, nullable = false)
-    private String categoria;
-    @Column(length = 100)
-    private String subCategoria;
-    @Column(length = 100, nullable = false)
-    private String identificador;
 }

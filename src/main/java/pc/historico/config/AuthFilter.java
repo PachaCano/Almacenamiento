@@ -1,10 +1,10 @@
 package pc.historico.config;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,17 +25,20 @@ import java.util.List;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
+
+    private String url;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String parameter = request.getParameter("token");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
 
-        WebClient webClient = WebClient.create("http://localhost:8080");
+        WebClient webClient = WebClient.create(url);
 
         VerifTokenResponse remoteToken = webClient.post()
-                .uri("/verify/token?token=" + parameter)
+                .uri("/verify/token?token=" + token)
                 .retrieve()
                 .onStatus(HttpStatus::isError,
                         clientResponse -> {
@@ -49,6 +52,7 @@ public class AuthFilter extends OncePerRequestFilter {
                 .log(log.getName())
                 .block();
 
+        assert remoteToken != null;
         if (remoteToken.getMensaje().equals("Token Invalido")) {
             SecurityContextHolder.clearContext();
             log.debug("El Token " + remoteToken.getTokenEncript() + " ha expirado o no es válido.");

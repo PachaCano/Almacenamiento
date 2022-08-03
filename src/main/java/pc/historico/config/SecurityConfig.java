@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,6 +29,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private String url;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().anyRequest().authenticated();
 
         // Agregar filtro de jwt
-        http.addFilterAfter(new AuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new AuthFilter(url), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
