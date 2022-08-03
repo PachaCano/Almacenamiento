@@ -21,7 +21,7 @@ public class Memcache {
 
     @Async
     public void actualizarUltimo(HistoricoDTO ult, int tExp) {
-        this.mcc.add("ultimo", tExp, ult.toString())
+        this.mcc.set("ultimo", tExp, ult.toString())
                 .addListener(future -> log.warn("Actualizado " + ult));
     }
 
