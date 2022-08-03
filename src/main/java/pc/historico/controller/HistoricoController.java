@@ -33,6 +33,16 @@ public class HistoricoController {
         }
     }
 
+    @GetMapping(value = "/paginado", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getHistoricoPaginado(Pageable pageable) {
+        try {
+            return new ResponseEntity<>(this.historicoServicio.listadoPaginado(pageable), HttpStatus.OK);
+        } catch (NegocioExcepcion e) {
+            log.error((e.getMessage()), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping(value = "/categoria/sub-categoria", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getHistoricoPorCategoriaSubCategoria(@RequestParam String categoria,
                                                         @RequestParam String subCategoria,

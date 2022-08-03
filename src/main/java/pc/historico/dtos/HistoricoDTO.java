@@ -22,12 +22,13 @@ public class HistoricoDTO {
         JSONObject json = new JSONObject(h.getRawData());
         this.rawData = new RawData();
         this.rawData.setAltitud(json.getDouble("altitud"));
-//        String fechaHora = json.getString("fechaHora").replace("T", " ");
-//        this.rawData.setFechaHora(fechaHora);
+        String fechaHora = json.getString("fechaHora").replace("T", " ");
+        this.rawData.setFechaHora(fechaHora);
         this.rawData.setHumedad(json.getDouble("humedad"));
         this.rawData.setPresion(json.getDouble("presion"));
         this.rawData.setPuntoRocio(json.getDouble("puntoRocio"));
         this.rawData.setTemperatura(json.getDouble("temperatura"));
+        this.rawData.setLocalizacion(json.getString("localizacion"));
     }
 
     private Long id;

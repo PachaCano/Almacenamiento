@@ -45,6 +45,16 @@ public class HistoricoNegocio implements IHistorioNegocio{
     }
 
     @Override
+    public Page<HistoricoDTO> listadoPaginado(Pageable pageable) throws NegocioExcepcion {
+        try {
+            return this.historicoDAO.findAllOrderByFechaHoraCreacionDesc(pageable).map(HistoricoDTO::new);
+        } catch (Exception e) {
+            log.error((e.getMessage()), e);
+            throw new NegocioExcepcion(e);
+        }
+    }
+
+    @Override
     public Page<HistoricoDTO> listadoHistoricoPaginadoSub(Pageable pageable, String categoria, String subCategoria) throws NegocioExcepcion {
         try {
             return this.historicoDAO.findAllByCategoriaAndSubCategoriaOrderByFechaHoraCreacionDesc(categoria, subCategoria, pageable).map(HistoricoDTO::new);
